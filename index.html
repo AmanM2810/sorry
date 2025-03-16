@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Apology to You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, rgba(255, 211, 211, 0.8), rgba(222, 213, 255, 0.8));
+            color: #333;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background: linear-gradient(135deg, #f8c0d1, #d2a1d3);
+            color: white;
+            padding: 120px 20px;
+            font-size: 4em;
+            text-align: center;
+            font-family: 'Great Vibes', cursive;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: fadeIn 2s forwards;
+        }
+
+        .content {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.5s forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 1s; }
+        .section:nth-child(2) { animation-delay: 1.5s; }
+        .section:nth-child(3) { animation-delay: 2s; }
+        .section:nth-child(4) { animation-delay: 2.5s; }
+
+        .apology-message {
+            font-size: 1.3em;
+            color: #6f4f4f;
+            line-height: 1.6;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .love-letter {
+            font-size: 1.5em;
+            color: #9b4d96;
+            line-height: 1.8;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .promise {
+            font-size: 1.4em;
+            color: #fff;
+            background-color: #f4d9e3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .promise:hover {
+            background-color: #f6a1a1;
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        /* Pop-up Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding-top: 50px;
+            transition: opacity 0.3s;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+            animation: fadeInModal 1s forwards;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-size: 2em;
+            color: #ff7f7f;
+        }
+
+        .modal-content p {
+            font-size: 1.3em;
+            color: #333;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 30px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        /* Classy Buttons */
+        .button {
+            background: linear-gradient(135deg, #ff7f7f, #fceabb);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.3em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #fceabb, #ff7f7f);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        .button .icon {
+            margin-right: 10px;
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+
+        .button:hover .icon {
+            transform: rotate(360deg);
+        }
+
+        /* Our Memories Section */
+        .memories {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .memory-slides {
+            display: flex;
+            transition: transform 1s ease;
+        }
+
+        .memory-slide {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .slide-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .prev, .next {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 20px;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media only screen and (max-width: 768px) {
+            header {
+                font-size: 2.5em;
+                padding: 80px 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                margin-bottom: 20px;
+            }
+
+            .apology-message, .love-letter, .promise {
+                font-size: 1.1em;
+            }
+
+            .button {
+                font-size: 1.1em;
+                padding: 12px 25px;
+            }
+
+            .promise {
+                font-size: 1.2em;
+                padding: 15px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .modal-content h2 {
+                font-size: 1.8em;
+            }
+
+            .prev, .next {
+                font-size: 25px;
+                padding: 15px;
+            }
+
+            .memory-slide {
+                height: 350px;
+            }
+
+            .slide-controls {
+                top: 40%;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            header {
+                font-size: 2em;
+                padding: 60px 20px;
+            }
+
+            .apology-message, .love-letter, .promise {
+                font-size: 1em;
+            }
+
+            .button {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+
+            .modal-content h2 {
+                font-size: 1.5em;
+            }
+
+            .prev, .next {
+                font-size: 20px;
+                padding: 10px;
+            }
+
+            .memory-slide {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background Music -->
+<audio id="background-music" autoplay loop>
+    <source src="128-chalo-jaane-do-bhoothnath-128-kbps_g0f5DEZH.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+</audio>
+
+<!-- Header Section -->
+<header>
+    To the love of my life, I'm sorry.
+</header>
+
+<!-- Content Section -->
+<div class="content">
+    <!-- Play Music Button -->
+    <section class="section">
+        <button onclick="toggleMusic()" class="button">
+            <span class="icon">🎶</span> Play Music
+        </button>
+    </section>
+
+    <section class="section apology-message">
+        <p>"I want to apologize for my actions and words, and I want to show you how much you truly mean to me."</p>
+    </section>
+
+    <section class="section love-letter">
+        <p>"I love you more than words can express. Thank you for being the light in my life. Every moment with you is a treasure, and I’m so sorry for making you feel unimportant. Please forgive me."</p>
+    </section>
+
+    <section class="section promise">
+        <p>"I promise to listen more, to cherish every moment with you, and to always treat you with the love and respect you deserve."</p>
+    </section>
+
+    <section class="section">
+        <p>Please send me your respone by clicking on the send response button (Write it with my nickname).</p>
+    </section>
+
+    <!-- Pop-up Buttons -->
+    <section class="section">
+        <button onclick="openModal('apologyModal')" class="button">
+            <span class="icon">💌</span> Apology Details
+        </button>
+        <button onclick="openModal('loveModal')" class="button">
+            <span class="icon">❤️</span> Read My Love Letter
+        </button>
+        <button onclick="openModal('memoriesModal')" class="button">
+            <span class="icon">📸</span> US
+        </button>
+    </section>
+
+    <!-- "Send Email" Button -->
+    <section class="section">
+        <a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJTNHjlcQJvkvNRFFqsphQRbLWzxZmRLsBJDfWFJXXxFkrhvqMlwSXgBvqSGRXhcdJmqHkL" class="button">
+            <span class="icon">✉️</span> Send Your Response
+        </a>
+    </section>
+
+    <!-- Our Memories Section (Slideshow) -->
+    <section class="section">
+        <h2>Our Memories</h2>
+        <div class="memories">
+            <div class="memory-slides">
+                <img class="memory-slide" src="Snapchat-1362346345.jpg" alt="Memory 1">
+                <img class="memory-slide" src="Snapchat-1476393508.jpg" alt="Memory 2">
+                <img class="memory-slide" src="Snapchat-1719433646.jpg" alt="Memory 3">
+                <img class="memory-slide" src="Snapchat-2044451928.jpg" alt="Memory 4">
+                <img class="memory-slide" src="Snapchat-711189936.jpg" alt="Memory 5">
+                <img class="memory-slide" src="Snapchat-743787612.jpg" alt="Memory 6">
+                <img class="memory-slide" src="Snapchat-816272612.jpg" alt="Memory 7">
+                <img class="memory-slide" src="Snapchat-1473605615.jpg" alt="Memory 8">
+                <img class="memory-slide" src="Snapchat-1471606030.jpg" alt="Memory 9">
+                <img class="memory-slide" src="Snapchat-1412933644.jpg" alt="Memory 10">
+                <img class="memory-slide" src="Snapchat-2062636978.jpg" alt="Memory 11">
+                <img class="memory-slide" src="Snapchat-207694371.jpg" alt="Memory 12">
+            </div>
+            <!-- Navigation Buttons -->
+            <div class="slide-controls">
+                <button class="prev">&#10094;</button>
+                <button class="next">&#10095;</button>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- Modals -->
+<!-- Apology Modal -->
+<div id="apologyModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('apologyModal')">&times;</span>
+        <h2>My Apology</h2>
+        <p>"I deeply regret what happened last night, and I want to make things right. You are my kuchi puchi, and I’m truly sorry for hurting you.It will not happen again this website is the proof for that"</p>
+    </div>
+</div>
+
+<!-- Love Letter Modal -->
+<div id="loveModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('loveModal')">&times;</span>
+        <h2>My Love Letter to You</h2>
+        <p>My dear Anya Gupta,"Every moment with you has been a dream come true. I love you more than you can ever know, and I want to cherish you forever."</p>
+    </div>
+</div>
+
+<!-- Memories Modal -->
+<div id="memoriesModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('memoriesModal')">&times;</span>
+        <h2>Our Special Moments</h2>
+        <p>Here's a memory to remind you of our beautiful time together:(I love holding your hand i want to hold them forever.)</p>
+        <img src="Snapchat-1024320764.jpg" alt="Memory 1" style="width: 100%; max-width: 400px;">
+    </div>
+</div>
+
+<script>
+    // Function to open the modal
+    function openModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    // Function to close the modal
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    // Slideshow functionality
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.memory-slide');
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+    const slideContainer = document.querySelector('.memory-slides');
+
+    function changeSlide() {
+        slideContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    nextButton.addEventListener('click', () => {
+        if (currentIndex < slides.length - 1) {
+            currentIndex++;
+        } else {
+            currentIndex = 0;
+        }
+        changeSlide();
+    });
+
+    prevButton.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+        } else {
+            currentIndex = slides.length - 1;
+        }
+        changeSlide();
+    });
+
+    // Function to toggle music play/pause
+    function toggleMusic() {
+        var music = document.getElementById("background-music");
+
+        if (music.paused) {
+            music.play();
+        } else {
+            music.pause();
+        }
+    }
+</script>
+
+</body>
+</html>
